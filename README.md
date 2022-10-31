@@ -1,5 +1,11 @@
-# hotelResertationSystem
-JDK: 17
-Hotel reservation system where you can specify how many rooms does your hotel have and manage the booking for each room separately for a year ahead!
+Title: Hotel Reservation System project
 
-First working version is realized using singleton pattern and normal short array.
+This project is created to show my ability to work with Core Java. The script helps user to track and modify the reservations of his hotel with custom number of rooms.
+Project is realised using Singleton pattern. 
+
+Technologies: Java 17
+
+Launch: just run it with your JDE.
+
+Project status: improvement state
+
