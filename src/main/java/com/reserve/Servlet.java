@@ -17,7 +17,6 @@ public class Servlet extends HttpServlet {
     String hotelName;
     private short size;
     private boolean inputFormatCheck;
-    short reservationID = 0;
     private ReservationRepository ReservationRepository;
 
     public Servlet() {
@@ -46,7 +45,7 @@ public class Servlet extends HttpServlet {
                 return;
             }
             try {
-                ReservationRepository.save(reservation.getStartDay(), reservation.getEndDay(), reservation.getRoomNum(), reservationID++);
+                ReservationRepository.save(reservation.getStartDay(), reservation.getEndDay(), reservation.getRoomNum());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("success.jsp");
                 request.setAttribute("RoomNum", reservation.getRoomNum()); // set your String value in the attribute
                 request.setAttribute("hotelName", hotelName);
