@@ -1,26 +1,53 @@
 package com.reserve;
+import java.sql.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class ReservationRepository {
-    private Connection dbConnection;
 
-    public ReservationRepository() {
-        this.dbConnection = DButil.getConnection();
+    static DButil util = new DButil();
+
+    private static String dbDriver = util.getDbDriver();
+    private static final String URL = util.getConnectionUrl();
+    private static final String USERNAME = util.getUserName();
+    private static final String PASSWORD = util.getPassword();
+
+    private static Connection connection;
+
+
+    // Connecting to database //
+    private void setConnection(){
+        try {
+            Class.forName(util.getDbDriver());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
+    private void closeConnection(){
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void save(short startDay, short endDay, short roomNum) {
         try {
-//            System.out.println(startDay + " " + endDay + " " + roomNum + " " + reservationID);
-            PreparedStatement prepStatement = dbConnection.prepareStatement
+            setConnection();
+
+            PreparedStatement prepStatement = connection.prepareStatement
                     ("insert into reserve (roomNum,startDay,endDay) values (?, ?, ?)");
             prepStatement.setShort(1, roomNum);
             prepStatement.setShort(2, startDay);
             prepStatement.setShort(3, endDay);
             prepStatement.executeUpdate();
+
+            closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -29,15 +56,17 @@ public class ReservationRepository {
     public short check(short startDay, short endDay, short size) {
         short count = 1;
         try {
-            PreparedStatement prepStatement = dbConnection.prepareStatement
+            setConnection();
+
+            PreparedStatement prepStatement = connection.prepareStatement
                     ("select roomNum,startDay,endDay from reserve");
             ResultSet rst = prepStatement.executeQuery();
             while (rst.next() && size >= count) {
-                if ((rst.getShort(2) >= startDay && rst.getShort(3) <= endDay) ||
-                        (rst.getShort(2) >= startDay && rst.getShort(3) <= endDay)) {
+                if (rst.getShort(2) >= startDay && rst.getShort(3) <= endDay) {
                     count++;
                 }
             }
+            closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

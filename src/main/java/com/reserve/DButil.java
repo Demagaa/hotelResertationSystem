@@ -1,35 +1,46 @@
 package com.reserve;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
 import java.util.Properties;
 
 public class DButil {
-    private static Connection dbConnection = null;
+    public String getDbDriver() {
+        return dbDriver;
+    }
 
-    public static Connection getConnection() {
-        if (dbConnection != null) {
-            return dbConnection;
-        }
-        try {
-            InputStream inputStream = DButil.class.getClassLoader()
-                    .getResourceAsStream("db.properties");
-            Properties properties = new Properties();
-            if (properties != null) {
+    public static String getConnectionUrl() {
+        return connectionUrl;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+     static String dbDriver;
+     static String connectionUrl;
+     static String userName;
+     static String password;
+
+    public DButil() {
+        InputStream inputStream = DButil.class.getClassLoader()
+                .getResourceAsStream("db.properties");
+        Properties properties = new Properties();
+        if (properties != null) {
+            try {
                 properties.load(inputStream);
-
-                String dbDriver = properties.getProperty("dbDriver");
-                String connectionUrl = properties
-                        .getProperty("connectionUrl");
-                String userName = properties.getProperty("userName");
-                String password = properties.getProperty("password");
-                Class.forName(dbDriver).getDeclaredConstructor().newInstance();
-                dbConnection = DriverManager.getConnection(connectionUrl,
-                        userName, password);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            this.dbDriver = properties.getProperty("dbDriver");
+            this.connectionUrl = properties.getProperty("connectionUrl");
+            this.userName = properties.getProperty("userName");
+            this.password = properties.getProperty("password");
         }
-        return dbConnection;
     }
 }
