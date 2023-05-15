@@ -1,34 +1,27 @@
-Title: Hotel Reservation System project
+#  Hotel Reservation System
 
 This project is created to show my ability to work with Core Java. The script helps user to track and modify the reservations of his hotel with custom number of rooms.
 Project is realised using Singleton pattern. 
 
-Technologies: Java 17
+## Technologies: 
 
-Launch:
+Java 17, Servlet, JDBC, Docker
 
-In order to work properly program needs local MySQL database set up:
+## Launch:
 
-Using the command line:
+Interaction with the service is implemented via web browser (http://localhost:8080/)
 
-If you do not already have the software, download MySQL Server and install the product.
+Program needs MySQL database to be set up:
 
-From the MySQL command line, create the database and the table:
+Database is dockerized, run compose command in INFO/db-docker folder, this will configure DB container with some sample data:
 
-create database reserve;
+`docker compose up`
 
-create table reserve (
-    reservationID int,
-    roomNum int,
-    startDay int,
-    endDay int
-);
-
-Set up the connectivity setting in db.properties file (localhost:3306 and root account used by default)
-
-Add mysql.connector.java library to your project structure.
+Alternatively you can run .sql script located in db-docker/init folder and configure DB on your local server. 
+Connectivity setting can be adjusted in db.properties file (localhost:3308 and root account used by default).
 
 
+## Project status
 
-Project status: actively developing
+actively developing
 
