@@ -23,5 +23,5 @@ Connectivity setting can be adjusted in db.properties file (localhost:3308 and r
 
 ## Project status
 
-actively developing
+Finished, improving stage
 
